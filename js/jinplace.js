@@ -61,6 +61,7 @@
 	 * @property {string} inputClass - A css class that is added to the input field
 	 * @property {string} okButtonClass - A css class that is added to the ok button
 	 * @property {string} cancelButtonClass - A css class that is added to the cancel button
+* 
 	 * @property {jQuery|string} activator - Object (or css selector) for object to activate editing. Defaults to the element itself.
 	 * @property {boolean} textOnly - When true (the default) text returned from server is displayed literally and not as html.
 	 * @property {string} placeholder - Text to display in empty elements.
@@ -76,6 +77,7 @@
 		'elementId',
 		'object',
 		'attribute',
+		'csrf',
 		'okButton',
 		'cancelButton',
 		'inputClass',
@@ -390,7 +392,8 @@
 		var params = {
 			"id": opts.elementId,
 			"object": opts.object,
-			attribute: opts.attribute
+			attribute: opts.attribute,
+			csrfmiddlewaretoken: opts.csrf
 		};
 
 		if ($.isPlainObject(value)) {
