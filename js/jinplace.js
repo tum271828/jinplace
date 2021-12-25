@@ -86,7 +86,8 @@
 		'placeholder',
 		'submitFunction',
 		'okButtonClass',
-		'cancelButtonClass'
+		'cancelButtonClass',
+		'contentType',
 	];
 
 	/**
@@ -352,9 +353,17 @@
 		 */
 		onUpdate: function(editor, opts, data) {
 			var self = this;
-			self.setContent(data);
-			editor.finish();
-			self.bindElement(opts);
+			if (editor.lookup !== undefined){
+				editor.lookup(self,editor,opts,data,(value)=>{
+					self.setContent(value);
+					editor.finish();
+					self.bindElement(opts);
+				})
+			} else {
+				self.setContent(data);
+				editor.finish();
+				self.bindElement(opts);
+			}			
 		},
 
 		/**
@@ -441,7 +450,7 @@
 			return $.ajax(opts.url, {
 				type: opts.method,
 				data: requestParams(opts, value),
-				dataType: 'text',
+				dataType: "text",
 
 				// iOS 6 has a dreadful bug where POST requests are not sent to the
 				// server if they are in the cache.
@@ -458,7 +467,7 @@
 		 */
 		loadFunction: function(opts) {
 			return $.ajax(opts.loadurl, {
-				data: requestParams(opts)
+				data: requestParams(opts),
 			});
 		}
 	};
@@ -695,6 +704,19 @@
 		 * values so that one can be selected.
 		 */
 		select: {
+			lookup: function (owner,editor,opts,data,callback) {
+				owner.fetchData(opts).done((ds)=>{
+					let choices=$.parseJSON(ds);
+					for (let [k,v] of choices) {
+						if (k==data) {
+							callback(v)
+							return 
+						}
+					}
+					callback(null)
+				})				
+			},
+
 			makeField: function (element, data) {
 				var field = $("<select>"),
 						choices = $.parseJSON(data);
@@ -725,7 +747,8 @@
 				field.on('change', function() {
 					field.trigger('jip:submit');
 				});
-			}
+			},
+			
 		}
 	};
 })(jQuery, window, document);
