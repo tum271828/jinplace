@@ -402,7 +402,7 @@
 			"id": opts.elementId,
 			"object": opts.object,
 			attribute: opts.attribute,
-			csrfmiddlewaretoken: opts.csrf
+			csrfmiddlewaretoken: opts.csrf,			
 		};
 
 		if ($.isPlainObject(value)) {
@@ -468,6 +468,7 @@
 		loadFunction: function(opts) {
 			return $.ajax(opts.loadurl, {
 				data: requestParams(opts),
+				dataType: 'json'
 			});
 		}
 	};
@@ -706,7 +707,8 @@
 		select: {
 			lookup: function (owner,editor,opts,data,callback) {
 				owner.fetchData(opts).done((ds)=>{
-					let choices=$.parseJSON(ds);
+					let choices=ds;
+					if (typeof choices !== 'object') choices=$.parseJSON(choices);
 					for (let [k,v] of choices) {
 						if (k==data) {
 							callback(v)
@@ -718,8 +720,10 @@
 			},
 
 			makeField: function (element, data) {
-				var field = $("<select>"),
-						choices = $.parseJSON(data);
+				var field = $("<select>")
+					let choices = data;
+					if (typeof choices !== 'object') choices=$.parseJSON(choices);
+						
 
 				var selected = false;
 				var elementChoice = null;
