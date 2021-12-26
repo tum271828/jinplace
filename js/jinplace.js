@@ -262,8 +262,8 @@
 			if (opts.data) {
 				data = opts.data;
 
-			} else if (opts.loadurl) {
-				data = opts.loadFunction(opts);
+			} else if (opts.loadurl) {				
+				data = opts.loadFunction(opts);				
 			} else if (opts.textOnly) {
 				data = $.trim(this.element.text());
 			} else {
@@ -468,7 +468,7 @@
 		loadFunction: function(opts) {
 			return $.ajax(opts.loadurl, {
 				data: requestParams(opts),
-				dataType: 'json'
+				dataType: 'json',
 			});
 		}
 	};
