@@ -677,6 +677,20 @@
 		input: {
 			buttonsAllowed: true
 		},
+		
+		/*
+		 * A number field.
+		 */
+		number: {
+			buttonsAllowed: true,
+
+			makeField: function (element, data) {
+				return $('<input type="number">')
+						.val("number "+data);
+			},
+
+		},
+
 
 		/*
 		 * A multi-line text area field.
