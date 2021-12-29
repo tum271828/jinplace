@@ -329,6 +329,20 @@
 			$.when(rval)
 					.done(function(data, textStatus, jqxhr) {
 						// If you have your own submitFunction, the arguments may have different meanings.
+						try {
+                            data=$.parseJSON(data)
+                            if (data.status==0) {
+								//opts.formatErrorMsg(data.msg)
+								self.element.trigger('jinplace:fail', [jqxhr, textStatus, data.msg]);
+                                self.cancel(editor);                                
+						        
+						        return
+                            } else if (data.status==1) {
+                                data=data.value
+                            }
+						} catch (e) {
+						    alert(e)
+						}
 						self.element.trigger('jinplace:done', [data, textStatus, jqxhr]);
 						self.onUpdate(editor, opts, data);
 					})
