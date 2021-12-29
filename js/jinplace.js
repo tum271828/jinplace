@@ -686,7 +686,7 @@
 
 			makeField: function (element, data) {
 				return $('<input type="number">')
-						.val("number "+data);
+						.val(data);
 			},
 
 		},
